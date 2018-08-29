@@ -1,0 +1,34 @@
+{
+  "version": "0.0.1",
+  "name": "Monitoshi-node-red",
+  "description": "Website uptime monitoring",
+  "engines": {
+    "node": "10.2.1"
+  },
+  "scripts": {
+    "start": "node-red --settings ./.node-red/settings.js --userDir ./.node-red",
+    "postinstall": "scripts/postinstall.sh",
+    "start:local": "MONGODB_HOST=127.0.0.1 MONGODB_PORT=27017 MONGODB_USER= MONGODB_PASS= MONGODB_NAME=monitors APP_URL=http://127.0.0.1:1880/ EMAIL_USER= EMAIL_SERVER= EMAIL_PASS= ENCRYPTION_KEY=false ENABLE_EDITOR=true npm start",
+    "serve": "mongod -dbpath ./data"
+  },
+  "dependencies": {
+    "node-red": "*",
+    "node-red-admin": "*",
+    "node-red-contrib-google": "^0.2.0",
+    "node-red-contrib-hangouts-chat": "0.0.2",
+    "node-red-contrib-process-env": "^0.2.5",
+    "node-red-node-mongodb": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lexoyo/monitoshi-node-red"
+  },
+  "keywords": [
+    "express",
+    "monitoring",
+    "uptime",
+    "rest",
+    "api"
+  ],
+  "license": "GPL"
+}

@@ -1,0 +1,27 @@
+[
+    {
+        "id": "331b63bb.2a7b5c",
+        "type": "mongodb in",
+        "z": "27e1b36c.a4a1f4",
+        "mongodb": "24931ccd.2a36cc",
+        "name": "find",
+        "collection": "monitors",
+        "operation": "find",
+        "x": 350,
+        "y": 340,
+        "wires": [
+            [
+                "8f9c6292.bcf13"
+            ]
+        ]
+    },
+    {
+        "id": "24931ccd.2a36cc",
+        "type": "mongodb",
+        "z": "",
+        "hostname": "$(MONGODB_HOST)",
+        "port": "$(MONGODB_PORT)",
+        "db": "monitoshi",
+        "name": ""
+    }
+]

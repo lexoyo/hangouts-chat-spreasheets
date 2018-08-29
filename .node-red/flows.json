@@ -1,0 +1,228 @@
+[
+    {
+        "id": "fc2c94c0.07f82",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "24931ccd.2a36cc",
+        "type": "mongodb",
+        "z": "",
+        "hostname": "$(MONGODB_HOST)",
+        "port": "$(MONGODB_PORT)",
+        "db": "$(MONGODB_NAME)",
+        "name": "env vars"
+    },
+    {
+        "id": "fb3cb6fb.b6a4a",
+        "type": "google-conn",
+        "z": "",
+        "name": "Google",
+        "key": "$(GOOGLE_KEYS)",
+        "scopes": "https://www.googleapis.com/auth/drive.file\nhttps://www.googleapis.com/auth/drive\nhttps://www.googleapis.com/auth/drive.readonly\nhttps://www.googleapis.com/auth/spreadsheets.readonly\nhttps://www.googleapis.com/auth/spreadsheets"
+    },
+    {
+        "id": "cb0c91f4.ba33b8",
+        "type": "hangouts-chat-in",
+        "z": "fc2c94c0.07f82",
+        "name": "",
+        "x": 140,
+        "y": 180,
+        "wires": [
+            [
+                "810558a6.41e46"
+            ]
+        ]
+    },
+    {
+        "id": "810558a6.41e46",
+        "type": "process-env",
+        "z": "fc2c94c0.07f82",
+        "name": "",
+        "into": "env",
+        "x": 130,
+        "y": 240,
+        "wires": [
+            [
+                "1e011d29.86cdeb"
+            ]
+        ]
+    },
+    {
+        "id": "bfef1cf6.ff8898",
+        "type": "template",
+        "z": "fc2c94c0.07f82",
+        "name": "",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "{{ #step0 }}\nquestion 0\n{{ /step0 }}\n{{ #step1 }}\nquestion 1\n{{ /step1 }}\n{{ #step2 }}\nquestion 2\n{{ /step2 }}\n{{ #step3 }}\nquestion 3\n{{ /step3 }}\n{{ #step4 }}\nquestion 4\n{{ /step4 }}\n",
+        "output": "str",
+        "x": 1260,
+        "y": 600,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "1e011d29.86cdeb",
+        "type": "function",
+        "z": "fc2c94c0.07f82",
+        "name": "step",
+        "func": "if(msg.payload === 'start') global.step = 0;\nelse global.step++;\nmsg['step' + global.step] = true;\n\n\nglobal.col = global.col || \"B\";\nglobal.line = global.line || 2;\nif(msg.payload === 'start') {\n    global.col = \"B\";\n    global.line++;\n}\nelse {\n    msg.save = {\n        \"spreadsheetId\": \"11iJG4ABqCv4yemJNvLKJvetCSwOBoJHoVR1zGbhi_hQ\",\n        \"range\": `${global.col}${global.line}`,\n        \"valueInputOption\": \"RAW\",\n        \"resource\": {\n            \"values\": [[msg.payload]],\n        }\n    };\n    global.col = String.fromCharCode(global.col.charCodeAt(0)+1);\n}\nmsg.payload = {\n    \"spreadsheetId\": \"11iJG4ABqCv4yemJNvLKJvetCSwOBoJHoVR1zGbhi_hQ\",\n    \"range\": `${global.col}1`\n};\n\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 130,
+        "y": 300,
+        "wires": [
+            [
+                "1320cb30.62668d",
+                "e22ba109.ebe5"
+            ]
+        ]
+    },
+    {
+        "id": "85a08764.c414c",
+        "type": "hangouts-chat-out",
+        "z": "fc2c94c0.07f82",
+        "name": "",
+        "varName": "env.GOOGLE_KEYS",
+        "x": 700,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "1320cb30.62668d",
+        "type": "google",
+        "z": "fc2c94c0.07f82",
+        "name": "",
+        "google": "fb3cb6fb.b6a4a",
+        "api": "sheets:v4",
+        "operation": "spreadsheets.values.get",
+        "x": 410,
+        "y": 160,
+        "wires": [
+            [
+                "2673b2ec.67c46e"
+            ]
+        ]
+    },
+    {
+        "id": "295c06f3.c5ded2",
+        "type": "inject",
+        "z": "fc2c94c0.07f82",
+        "name": "",
+        "topic": "",
+        "payload": "{\"spreadsheetId\":\"1IontkwNgvZpm5pVJGYsIQHvdqyN2K3IuqC0um4CcDOw\",\"range\":\"Users!A1\"}",
+        "payloadType": "json",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "x": 130,
+        "y": 540,
+        "wires": [
+            [
+                "1320cb30.62668d"
+            ]
+        ]
+    },
+    {
+        "id": "2673b2ec.67c46e",
+        "type": "change",
+        "z": "fc2c94c0.07f82",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "payload.values[0][0]",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 440,
+        "y": 220,
+        "wires": [
+            [
+                "85a08764.c414c"
+            ]
+        ]
+    },
+    {
+        "id": "222c8bd3.95e6cc",
+        "type": "google",
+        "z": "fc2c94c0.07f82",
+        "name": "",
+        "google": "fb3cb6fb.b6a4a",
+        "api": "sheets:v4",
+        "operation": "spreadsheets.values.update",
+        "x": 410,
+        "y": 440,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e22ba109.ebe5",
+        "type": "switch",
+        "z": "fc2c94c0.07f82",
+        "name": "save?",
+        "property": "save",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "nnull"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 410,
+        "y": 320,
+        "wires": [
+            [
+                "832878ce.3d896"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "832878ce.3d896",
+        "type": "change",
+        "z": "fc2c94c0.07f82",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "save",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 410,
+        "y": 380,
+        "wires": [
+            [
+                "222c8bd3.95e6cc"
+            ]
+        ]
+    }
+]
