@@ -1,14 +1,14 @@
 {
   "version": "0.0.1",
-  "name": "Monitoshi-node-red",
-  "description": "Website uptime monitoring",
+  "name": "hangouts-chat-spreasheets",
+  "description": "",
   "engines": {
     "node": "10.2.1"
   },
   "scripts": {
     "start": "node-red --settings ./.node-red/settings.js --userDir ./.node-red",
     "postinstall": "scripts/postinstall.sh",
-    "start:local": "MONGODB_HOST=127.0.0.1 MONGODB_PORT=27017 MONGODB_USER= MONGODB_PASS= MONGODB_NAME=monitors APP_URL=http://127.0.0.1:1880/ EMAIL_USER= EMAIL_SERVER= EMAIL_PASS= ENCRYPTION_KEY=false ENABLE_EDITOR=true npm start",
+    "start:local": "MONGODB_HOST=127.0.0.1 MONGODB_PORT=27017 MONGODB_USER= MONGODB_PASS= MONGODB_NAME=chat APP_URL=http://127.0.0.1:1880/ EMAIL_USER= EMAIL_SERVER= EMAIL_PASS= ENCRYPTION_KEY=false ENABLE_EDITOR=true npm start",
     "serve": "mongod -dbpath ./data"
   },
   "dependencies": {
